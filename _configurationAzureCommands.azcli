@@ -1,0 +1,42 @@
+#https://docs.microsoft.com/en-us/learn/modules/create-multi-stage-pipeline/3-set-up-environment
+
+az login
+
+az configure --defaults group=learn-f4ff5031-a224-4fcf-a38b-bfcc1cd91c51 location=westeurope
+
+az account list-locations `
+  --query "[].{Name: name, DisplayName: displayName}" `
+  --output table
+
+
+$webappsuffix = Get-Random -Maximum 100
+$webappsuffix = 'wbe'
+
+az group create --name tailspin-space-game-rg
+
+az appservice plan create `
+  --name tailspin-space-game-asp `
+  --sku B1
+
+az webapp create `
+  --name tailspin-space-game-web-dev-$webappsuffix `
+  --plan tailspin-space-game-asp
+
+az webapp create `
+  --name tailspin-space-game-web-test-$webappsuffix `
+  --plan tailspin-space-game-asp
+
+az webapp create `
+  --name tailspin-space-game-web-staging-$webappsuffix `
+  --plan tailspin-space-game-asp
+
+# list host name and state for each app service we just created
+az webapp list `
+  --query "[].{hostName: defaultHostName, state: state}" `
+  --output table
+
+#!TODO: Connect Azure Devops to Azure Resources using a new Azure service connection
+#!TODO: See last chapter 'Create  a  service connection' @ https://docs.microsoft.com/en-us/learn/modules/create-multi-stage-pipeline/3-set-up-environment
+#!TODO: I do NOT have an active subscription so I cant..
+#!TODO: But maybe this can be done abusing a learning path where app service is created?
+
