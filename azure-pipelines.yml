@@ -1,5 +1,5 @@
 trigger:
-- azure-pipelines
+- release-pipeline
 
 pool:
   vmImage: 'ubuntu-16.04'
