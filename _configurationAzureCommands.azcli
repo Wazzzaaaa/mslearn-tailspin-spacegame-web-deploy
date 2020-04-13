@@ -40,8 +40,12 @@ az webapp list `
 #!TODO: I do NOT have an active subscription so I cant..
 #!TODO: But maybe this can be done abusing a learning path where app service is created?
 
-# More information about setting up yaml pipelines, trigger when pull request/merge to master is done: 
+#Info: about setting up yaml pipelines, trigger when pull request/merge to master is done: 
 # https://docs.microsoft.com/en-us/learn/modules/implement-code-workflow/
+
+#Info: about how to configure the integration between GitHub and Azure Pipelines
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#github-app-authentication
+
 
 #GIT Commands:
 # # switch to the git release branch where the yml pipeline is located:
