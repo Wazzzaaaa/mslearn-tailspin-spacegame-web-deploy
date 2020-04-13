@@ -59,3 +59,9 @@ az webapp list `
 ## azure cli CLEANUP resources:
 ##az group delete --name tailspin-space-game-rg
 ##az group list --output table
+
+#Info: Azure YML/YAML pipelines     : https://docs.microsoft.com/en-us/learn/modules/create-multi-stage-pipeline/8-summary
+#Info: Conditions                   : https://docs.microsoft.com/azure/devops/pipelines/process/conditions?view=azure-devops&tabs=yaml
+#Info: Build pipeline Triggers      : https://docs.microsoft.com/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml
+#Info: Approvals and other checks   : https://docs.microsoft.com/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml
+
