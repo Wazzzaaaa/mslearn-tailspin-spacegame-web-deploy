@@ -56,3 +56,6 @@ az webapp list `
 # git commit -m "Deploy to the Dev stage"
 # git push origin release
 
+## azure cli CLEANUP resources:
+##az group delete --name tailspin-space-game-rg
+##az group list --output table
