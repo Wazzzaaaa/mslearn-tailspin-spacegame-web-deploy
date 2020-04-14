@@ -9,9 +9,9 @@ using System.Collections;
 
 namespace UITests
 {
-    [TestFixture("Chrome")]
-    [TestFixture("Firefox")]
-    [TestFixture("IE")]
+    [TestFixture("Chrome")] // use 'dotnet dev-certs https --trust' to trust localhost addresses!
+    //[TestFixture("Firefox")]
+    //[TestFixture("IE")]
     public class HomePageTest
     {
         private string browser;
