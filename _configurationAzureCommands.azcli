@@ -1,0 +1,77 @@
+#https://docs.microsoft.com/en-us/learn/modules/create-multi-stage-pipeline/3-set-up-environment
+
+az login
+
+az configure --defaults group=learn-f4ff5031-a224-4fcf-a38b-bfcc1cd91c51 location=westeurope
+
+az account list-locations `
+  --query "[].{Name: name, DisplayName: displayName}" `
+  --output table
+
+
+$webappsuffix = Get-Random -Maximum 100
+$webappsuffix = 'wbe'
+
+az group create --name tailspin-space-game-rg
+
+#create app service plan basic
+az appservice plan create `
+  --name tailspin-space-game-test-asp `
+  --resource-group tailspin-space-game-rg `
+  --sku B1
+
+#create app service plan premium (which provides additional deployment slots!)
+az appservice plan create `
+  --name tailspin-space-game-prod-asp `
+  --resource-group tailspin-space-game-rg `
+  --sku P1V2
+
+az webapp create ` #dev (test plan)
+  --name tailspin-space-game-web-dev-$webappsuffix `
+  --resource-group tailspin-space-game-rg `
+  --plan tailspin-space-game-test-asp
+
+az webapp create ` #test (test plan)
+  --name tailspin-space-game-web-test-$webappsuffix `
+  --resource-group tailspin-space-game-rg `
+  --plan tailspin-space-game-test-asp
+
+az webapp create ` #staging (prod plan)
+  --name tailspin-space-game-web-staging-$webappsuffix `
+  --resource-group tailspin-space-game-rg `
+  --plan tailspin-space-game-prod-asp
+
+# list host name and state for each app service we just created
+az webapp list `
+  --query "[].{hostName: defaultHostName, state: state}" `
+  --output table
+
+$staging=$(az webapp list `
+  --resource-group tailspin-space-game-rg `
+  --query "[?contains(@.name, 'tailspin-space-game-web-staging')].{name: name}" `
+  --output tsv)
+write-host("staging: " + $staging)
+
+#create a deployment slot named 'swap'
+az webapp deployment slot create `
+  --name $staging ` #name of the webapp
+  --resource-group tailspin-space-game-rg `
+  --slot swap       #name of the slot
+
+#list deployment slot host name:
+az webapp deployment slot list `
+    --name $staging `
+    --resource-group tailspin-space-game-rg `
+    --query [].hostNames `
+    --output tsv
+
+
+#!TODO: Connect Azure Devops to Azure Resources using a new Azure service connection
+#!TODO: See last chapter 'Create  a  service connection' @ https://docs.microsoft.com/en-us/learn/modules/create-multi-stage-pipeline/3-set-up-environment
+#!TODO: I do NOT have an active subscription so I cant..
+#!TODO: But maybe this can be done abusing a learning path where app service is created?
+
+
+## azure cli CLEANUP resources:
+##az group delete --name tailspin-space-game-rg
+##az group list --output table
